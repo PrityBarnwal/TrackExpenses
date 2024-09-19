@@ -46,7 +46,7 @@ private fun SetupNavigation(
 ) {
 
     val navController = rememberNavController()
-    Scaffold(containerColor = Color.White, modifier = Modifier.fillMaxSize().navigationBarsPadding(), bottomBar = {
+    Scaffold(containerColor = Color.Black, modifier = Modifier.fillMaxSize().navigationBarsPadding(), bottomBar = {
         BottomNavbar(
             navController = navController,
             onBackPressedDispatcher = onBackPressedDispatcher,

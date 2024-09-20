@@ -19,8 +19,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.trackerexpenses.navigation.RouteApp
 import com.google.firebase.auth.FirebaseAuth
@@ -37,10 +40,19 @@ fun ForgotPasswordScreen(navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
+            .padding(20.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = "Forgot Password", style = MaterialTheme.typography.bodyLarge)
+        Text(
+            text = "Forgot Password",
+            style = androidx.compose.material.MaterialTheme.typography.subtitle1,
+            color = Color.White,
+            fontSize = 24.sp,
+            fontWeight = FontWeight.Bold,textAlign = TextAlign.Center,
+            modifier = Modifier
+                .fillMaxWidth()
+
+        )
         Spacer(modifier = Modifier.height(20.dp))
 
         // Email Input

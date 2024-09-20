@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.OutlinedTextField
@@ -31,6 +32,7 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -92,8 +94,17 @@ fun LoginScreen(navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = 20.dp)
+            .padding(20.dp)
     ) {
+        Text(
+            text = "Login",
+            style = MaterialTheme.typography.subtitle1,
+            color = Color.White,
+            fontSize = 30.sp,
+            fontWeight = FontWeight.Bold,textAlign = TextAlign.Center,
+            modifier = Modifier
+                .fillMaxWidth()
+        )
         OutlinedTextField(
             value = email.value,
             onValueChange = {
@@ -173,11 +184,15 @@ fun LoginScreen(navController: NavController) {
         ) {
             Text(text = "Login", color = Color.White)
         }
+
         Spacer(modifier = Modifier.height(10.dp))
         Text(
-            text = "Forget Password", color = Color.White, fontSize = 20.sp,  fontWeight = FontWeight.Bold,
-            modifier = Modifier.fillMaxWidth()
-                .align(Alignment.CenterHorizontally)
+            text = "Forget Password",
+            color = Color.White,
+            fontSize = 24.sp,
+            fontWeight = FontWeight.Bold,textAlign = TextAlign.Center,
+            modifier = Modifier
+                .fillMaxWidth()
                 .clickable { navController.navigate(RouteApp.ForgotPasswordRoute.route) })
 
         Spacer(modifier = Modifier.height(10.dp))

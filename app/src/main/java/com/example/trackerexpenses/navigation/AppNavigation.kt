@@ -10,6 +10,7 @@ import androidx.navigation.navigation
 import com.example.trackerexpenses.screen.authScreen.CreateAccountScreen
 import com.example.trackerexpenses.screen.authScreen.ForgotPasswordScreen
 import com.example.trackerexpenses.screen.authScreen.LoginScreen
+import com.example.trackerexpenses.screen.authScreen.ResetEmailScreen
 import com.example.trackerexpenses.screen.authScreen.SplashScreen
 import com.example.trackerexpenses.screen.home.AddScreen
 import com.example.trackerexpenses.screen.home.HomeScreen
@@ -33,6 +34,9 @@ fun NavGraphBuilder.authNavGraph(
         }
         composable(route = RouteApp.ForgotPasswordRoute.route) {
             ForgotPasswordScreen(navController = navController)
+        }
+        composable(route = RouteApp.ResetEmailRoute.route) {
+            ResetEmailScreen(navController = navController)
         }
     }
 }

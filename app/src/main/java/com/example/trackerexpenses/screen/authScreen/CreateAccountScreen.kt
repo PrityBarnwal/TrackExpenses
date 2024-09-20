@@ -21,9 +21,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.trackerexpenses.navigation.RouteApp
 import com.google.firebase.auth.FirebaseAuth
@@ -88,7 +90,8 @@ fun CreateAccountScreen(navController: NavController) {
                 emailError.value = !isValidEmail(it)
             },
             isError = emailError.value,
-            label = { Text("Email") },
+            label = { Text("Email", color = Color.White) },
+            textStyle = TextStyle(color = Color.White, fontSize = 12.sp),
             keyboardOptions = KeyboardOptions.Default.copy(
                 keyboardType = KeyboardType.Email,
                 imeAction = ImeAction.Next
@@ -109,6 +112,7 @@ fun CreateAccountScreen(navController: NavController) {
             },
             isError = passwordError.value,
             label = { Text("Password") },
+            textStyle = TextStyle(color = Color.White, fontSize = 12.sp),
             keyboardOptions = KeyboardOptions.Default.copy(
                 keyboardType = KeyboardType.Password,
                 imeAction = ImeAction.Done
@@ -129,6 +133,7 @@ fun CreateAccountScreen(navController: NavController) {
             },
             isError = confirmPasswordError.value,
             label = { Text("Confirm Password") },
+            textStyle = TextStyle(color = Color.White, fontSize = 12.sp),
             keyboardOptions = KeyboardOptions.Default.copy(
                 keyboardType = KeyboardType.Password,
                 imeAction = ImeAction.Done

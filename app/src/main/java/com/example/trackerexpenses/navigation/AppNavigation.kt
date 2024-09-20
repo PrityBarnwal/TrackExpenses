@@ -8,6 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.example.trackerexpenses.screen.authScreen.CreateAccountScreen
+import com.example.trackerexpenses.screen.authScreen.ForgotPasswordScreen
 import com.example.trackerexpenses.screen.authScreen.LoginScreen
 import com.example.trackerexpenses.screen.authScreen.SplashScreen
 import com.example.trackerexpenses.screen.home.AddScreen
@@ -29,6 +30,9 @@ fun NavGraphBuilder.authNavGraph(
         }
         composable(route = RouteApp.CreateAccountRoute.route) {
             CreateAccountScreen(navController = navController)
+        }
+        composable(route = RouteApp.ForgotPasswordRoute.route) {
+            ForgotPasswordScreen(navController = navController)
         }
     }
 }

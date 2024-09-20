@@ -5,7 +5,7 @@ sealed class RouteApp(val route: String) {
     object LoginRoute : RouteApp("login_screen_route")
     object CreateAccountRoute : RouteApp("create_account_route")
     object ResetPassword : RouteApp("reset_password")
-    object ForgotPassword : RouteApp("forgot_password")
+    object ForgotPasswordRoute : RouteApp("forgot_password")
     object ResetEmailSent : RouteApp("email_sent")
     object SetProfile : RouteApp("set_profile")
     object OtpScreen : RouteApp("otp_screen_route")

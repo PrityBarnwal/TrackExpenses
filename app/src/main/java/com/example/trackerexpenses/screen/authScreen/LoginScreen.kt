@@ -5,6 +5,7 @@ import android.util.Patterns
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.OutlinedTextField
@@ -23,6 +25,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -77,17 +80,18 @@ fun LoginScreen(navController: NavController) {
 
     // Handle the result of Google Sign-In
     val scope = rememberCoroutineScope()
-    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
-        try {
-            val account = task.getResult(Exception::class.java)
-            account?.let {
-                firebaseAuthWithGoogle(it, navController, auth)
+    val launcher =
+        rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+            try {
+                val account = task.getResult(Exception::class.java)
+                account?.let {
+                    firebaseAuthWithGoogle(it, navController, auth)
+                }
+            } catch (e: Exception) {
+                formErrorMessage.value = "Google sign-in failed: ${e.message}"
             }
-        } catch (e: Exception) {
-            formErrorMessage.value = "Google sign-in failed: ${e.message}"
         }
-    }
 
 
     Column(
@@ -102,7 +106,7 @@ fun LoginScreen(navController: NavController) {
                 emailError.value = !isValidEmail(it)
             },
             isError = emailError.value,
-            label = { Text("Email") },
+            label = { Text("Email", color = Color.White) },
             singleLine = true,
             textStyle =
             TextStyle(color = Color.White, fontSize = 12.sp),
@@ -125,7 +129,7 @@ fun LoginScreen(navController: NavController) {
                 passwordError.value = !isValidPassword(it)
             },
             isError = passwordError.value,
-            label = { Text("Password") },
+            label = { Text("Password", color = Color.White) },
             singleLine = true,
             textStyle = TextStyle(color = Color.White, fontSize = 12.sp),
             keyboardOptions = KeyboardOptions.Default.copy(
@@ -174,6 +178,13 @@ fun LoginScreen(navController: NavController) {
         ) {
             Text(text = "Login", color = Color.White)
         }
+        Spacer(modifier = Modifier.height(10.dp))
+        Text(
+            text = "Forget Password", color = Color.White, fontSize = 20.sp,
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .fillMaxWidth()
+                .clickable { navController.navigate(RouteApp.ForgotPasswordRoute.route) })
         Spacer(modifier = Modifier.height(10.dp))
         Button(
             onClick = { navController.navigate(RouteApp.CreateAccountRoute.route) },
@@ -227,7 +238,11 @@ fun loginWithEmailPassword(
         }
 }
 
-fun firebaseAuthWithGoogle(account: GoogleSignInAccount, navController: NavController, auth: FirebaseAuth) {
+fun firebaseAuthWithGoogle(
+    account: GoogleSignInAccount,
+    navController: NavController,
+    auth: FirebaseAuth
+) {
     val credential: AuthCredential = GoogleAuthProvider.getCredential(account.idToken, null)
     auth.signInWithCredential(credential)
         .addOnCompleteListener { task ->

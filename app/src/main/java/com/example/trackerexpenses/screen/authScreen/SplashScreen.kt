@@ -18,13 +18,27 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.trackerexpenses.R
 import com.example.trackerexpenses.navigation.RouteApp
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.delay
 
 @Composable
 fun SplashScreen(navController: NavController) {
     LaunchedEffect(Unit) {
         delay(1000)
-        navController.navigate(RouteApp.LoginRoute.route)
+//        navController.navigate(RouteApp.LoginRoute.route)
+        val currentUser = FirebaseAuth.getInstance().currentUser
+
+        if (currentUser != null) {
+            // User is signed in, navigate to the Home screen
+            navController.navigate(RouteApp.HomeScreen.route) {
+                popUpTo(RouteApp.SplashRoute.route) { inclusive = true }
+            }
+        } else {
+            // User is not signed in, navigate to the Login screen
+            navController.navigate(RouteApp.LoginRoute.route) {
+                popUpTo(RouteApp.SplashRoute.route) { inclusive = true }
+            }
+        }
     }
 
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {

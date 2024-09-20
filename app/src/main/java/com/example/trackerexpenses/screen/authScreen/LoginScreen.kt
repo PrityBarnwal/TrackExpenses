@@ -1,6 +1,9 @@
 package com.example.trackerexpenses.screen.authScreen
 
+import android.util.Log
 import android.util.Patterns
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -16,18 +19,29 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.trackerexpenses.R
 import com.example.trackerexpenses.navigation.RouteApp
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.firebase.auth.AuthCredential
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 
 @Composable
 fun LoginScreen(navController: NavController) {
@@ -41,12 +55,40 @@ fun LoginScreen(navController: NavController) {
 
     val emailError = remember { mutableStateOf(false) }
     val passwordError = remember { mutableStateOf(false) }
+    val formErrorMessage = remember { mutableStateOf<String?>(null) }
 
-    val isFormValid = remember {
+
+    val isFormValid by remember {
         derivedStateOf {
             !emailError.value && !passwordError.value && email.value.isNotBlank() && password.value.isNotBlank()
         }
     }
+
+    val context = LocalContext.current
+    val auth = FirebaseAuth.getInstance()
+
+    // Configure Google Sign-In options
+    val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        .requestIdToken(context.getString(R.string.default_web_client_id))
+        .requestEmail()
+        .build()
+
+    val googleSignInClient: GoogleSignInClient = GoogleSignIn.getClient(context, gso)
+
+    // Handle the result of Google Sign-In
+    val scope = rememberCoroutineScope()
+    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+        try {
+            val account = task.getResult(Exception::class.java)
+            account?.let {
+                firebaseAuthWithGoogle(it, navController, auth)
+            }
+        } catch (e: Exception) {
+            formErrorMessage.value = "Google sign-in failed: ${e.message}"
+        }
+    }
+
 
     Column(
         modifier = Modifier
@@ -99,10 +141,25 @@ fun LoginScreen(navController: NavController) {
         }
         Spacer(modifier = Modifier.height(10.dp))
 
+        formErrorMessage.value?.let {
+            Text(text = it, color = Color.Red)
+            Spacer(modifier = Modifier.height(10.dp))
+        }
+
         Button(
             onClick = {
-                if (isFormValid.value) {
-                    navController.navigate(RouteApp.HomeScreen.route)
+                if (isFormValid) {
+                    loginWithEmailPassword(
+                        email = email.value,
+                        password = password.value,
+                        onResult = { isSuccess, message ->
+                            if (isSuccess) {
+                                navController.navigate(RouteApp.HomeScreen.route)
+                            } else {
+                                formErrorMessage.value = message
+                            }
+                        }
+                    )
                 }
             },
             shape = RoundedCornerShape(20.dp),
@@ -113,7 +170,7 @@ fun LoginScreen(navController: NavController) {
                 containerColor = Color.Gray,
                 disabledContainerColor = Color.LightGray
             ),
-            enabled = isFormValid.value
+            enabled = isFormValid
         ) {
             Text(text = "Login", color = Color.White)
         }
@@ -128,6 +185,20 @@ fun LoginScreen(navController: NavController) {
         ) {
             Text(text = "SignIn", color = Color.White)
         }
+        Spacer(modifier = Modifier.height(10.dp))
+        Button(
+            onClick = {
+                val signInIntent = googleSignInClient.signInIntent
+                launcher.launch(signInIntent)
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(20.dp)),
+            colors = ButtonDefaults.buttonColors(containerColor = Color.Gray)
+        ) {
+            Text(text = "Sign in with Google", color = Color.White)
+        }
+        Spacer(modifier = Modifier.height(10.dp))
     }
 }
 
@@ -138,4 +209,36 @@ fun isValidEmail(email: String): Boolean {
 fun isValidPassword(password: String): Boolean {
     val passwordPattern = "^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%^&*])[A-Za-z0-9!@#\$%^&*]{8,}$"
     return Regex(passwordPattern).matches(password)
+}
+
+fun loginWithEmailPassword(
+    email: String,
+    password: String,
+    onResult: (Boolean, String?) -> Unit
+) {
+    val auth = FirebaseAuth.getInstance()
+    auth.signInWithEmailAndPassword(email, password)
+        .addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                onResult(true, null) // Successful login
+            } else {
+                onResult(false, task.exception?.message) // Login failed, return error message
+            }
+        }
+}
+
+fun firebaseAuthWithGoogle(account: GoogleSignInAccount, navController: NavController, auth: FirebaseAuth) {
+    val credential: AuthCredential = GoogleAuthProvider.getCredential(account.idToken, null)
+    auth.signInWithCredential(credential)
+        .addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                // Sign-in success, navigate to HomeScreen
+                navController.navigate(RouteApp.HomeScreen.route) {
+                    popUpTo(RouteApp.LoginRoute.route) { inclusive = true }
+                }
+            } else {
+                // Handle failure
+                Log.w("GoogleSignIn", "signInWithCredential:failure", task.exception)
+            }
+        }
 }

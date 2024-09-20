@@ -21,10 +21,12 @@ import androidx.navigation.compose.rememberNavController
 import com.example.trackerexpenses.bottomNavigation.BottomNavbar
 import com.example.trackerexpenses.navigation.RootNavGraph
 import com.example.trackerexpenses.ui.theme.TrackerExpensesTheme
+import com.google.firebase.FirebaseApp
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        FirebaseApp.initializeApp(this)
         enableEdgeToEdge()
         setContent {
             /*val viewModel: GroceryViewModel by viewModels()

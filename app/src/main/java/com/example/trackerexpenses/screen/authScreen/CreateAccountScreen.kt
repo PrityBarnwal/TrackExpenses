@@ -14,8 +14,10 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -24,28 +26,42 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.trackerexpenses.navigation.RouteApp
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.UserProfileChangeRequest
 
 
 @Composable
 fun CreateAccountScreen(navController: NavController) {
 
-    val nameCreate = remember {
+    var nameCreate by remember {
         mutableStateOf("")
     }
-    val emailCreate = remember {
+    var emailCreate by remember {
         mutableStateOf("")
     }
-    val passwordCreate = remember {
+    var passwordCreate by remember {
         mutableStateOf("")
     }
+    var confirmPassword by remember { mutableStateOf("") }
 
     val nameError = remember { mutableStateOf(false) }
     val emailError = remember { mutableStateOf(false) }
     val passwordError = remember { mutableStateOf(false) }
+    val confirmPasswordError = remember { mutableStateOf(false) }
+    val formErrorMessage = remember { mutableStateOf<String?>(null) }
 
-    val isFormValid = remember {
+
+    val isFormValid by remember {
         derivedStateOf {
-            !nameError.value && !emailError.value && !passwordError.value && nameCreate.value.isNotBlank() && emailCreate.value.isNotBlank() && passwordCreate.value.isNotBlank()
+            !nameError.value &&
+                    !emailError.value &&
+                    !passwordError.value &&
+                    !confirmPasswordError.value &&
+                    nameCreate.isNotBlank() &&
+                    emailCreate.isNotBlank() &&
+                    passwordCreate.isNotBlank() &&
+                    confirmPassword.isNotBlank() &&
+                    passwordCreate == confirmPassword
         }
     }
 
@@ -55,8 +71,8 @@ fun CreateAccountScreen(navController: NavController) {
             .padding(horizontal = 20.dp)
     ) {
         OutlinedTextField(
-            value = nameCreate.value,
-            onValueChange = { nameCreate.value = it },
+            value = nameCreate,
+            onValueChange = { nameCreate = it },
             label = { Text("Name") },
             isError = nameError.value,
             keyboardOptions = KeyboardOptions.Default.copy(
@@ -66,9 +82,9 @@ fun CreateAccountScreen(navController: NavController) {
         )
         Spacer(modifier = Modifier.height(10.dp))
         OutlinedTextField(
-            value = emailCreate.value,
+            value = emailCreate,
             onValueChange = {
-                emailCreate.value = it
+                emailCreate = it
                 emailError.value = !isValidEmail(it)
             },
             isError = emailError.value,
@@ -86,9 +102,9 @@ fun CreateAccountScreen(navController: NavController) {
         }
         Spacer(modifier = Modifier.height(10.dp))
         OutlinedTextField(
-            value = passwordCreate.value,
+            value = passwordCreate,
             onValueChange = {
-                passwordCreate.value = it
+                passwordCreate = it
                 passwordError.value = !isValidPassword(it)
             },
             isError = passwordError.value,
@@ -105,12 +121,45 @@ fun CreateAccountScreen(navController: NavController) {
             )
         }
         Spacer(modifier = Modifier.height(10.dp))
+        OutlinedTextField(
+            value = confirmPassword,
+            onValueChange = {
+                confirmPassword = it
+                confirmPasswordError.value = passwordCreate != it
+            },
+            isError = confirmPasswordError.value,
+            label = { Text("Confirm Password") },
+            keyboardOptions = KeyboardOptions.Default.copy(
+                keyboardType = KeyboardType.Password,
+                imeAction = ImeAction.Done
+            ),
+            modifier = Modifier.fillMaxWidth()
+        )
+        if (confirmPasswordError.value) {
+            Text(text = "Passwords do not match", color = Color.Red)
+        }
+        Spacer(modifier = Modifier.height(10.dp))
+        formErrorMessage.value?.let {
+            Text(text = it, color = Color.Red)
+            Spacer(modifier = Modifier.height(10.dp))
+        }
 
         Button(
             onClick = {
-                if (isFormValid.value) {
-                    navController.navigate(RouteApp.HomeScreen.route)
-                }
+                    if (isFormValid) {
+                        createUserWithEmailPassword(
+                            email = emailCreate,
+                            password = passwordCreate,
+                            name = nameCreate,
+                            onResult = { isSuccess, message ->
+                                if (isSuccess) {
+                                    navController.navigate(RouteApp.HomeScreen.route)
+                                } else {
+                                    formErrorMessage.value = message
+                                }
+                            }
+                        )
+                    }
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -118,10 +167,39 @@ fun CreateAccountScreen(navController: NavController) {
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color.Gray,
                 disabledContainerColor = Color.LightGray
-            ), enabled = isFormValid.value
+            ), enabled = isFormValid
 
         ) {
             Text(text = "Create Account", color = Color.White)
         }
     }
+}
+
+fun createUserWithEmailPassword(
+    email: String,
+    password: String,
+    name: String,
+    onResult: (Boolean, String?) -> Unit
+) {
+    val auth = FirebaseAuth.getInstance()
+    auth.createUserWithEmailAndPassword(email, password)
+        .addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val user = auth.currentUser
+                val profileUpdates = UserProfileChangeRequest.Builder()
+                    .setDisplayName(name)
+                    .build()
+
+                user?.updateProfile(profileUpdates)
+                    ?.addOnCompleteListener { profileTask ->
+                        if (profileTask.isSuccessful) {
+                            onResult(true, null) // Success
+                        } else {
+                            onResult(false, profileTask.exception?.message)
+                        }
+                    }
+            } else {
+                onResult(false, task.exception?.message)
+            }
+        }
 }

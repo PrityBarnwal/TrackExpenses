@@ -86,6 +86,7 @@ fun CreateAccountScreen(navController: NavController) {
                     modifier = Modifier
                     .fillMaxWidth()
         )
+        Spacer(modifier = Modifier.height(20.dp))
         OutlinedTextField(
             value = nameCreate,
             onValueChange = { nameCreate = it },

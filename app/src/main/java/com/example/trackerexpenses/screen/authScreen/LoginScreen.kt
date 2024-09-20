@@ -1,10 +1,8 @@
 package com.example.trackerexpenses.screen.authScreen
 
 import android.util.Log
-import android.util.Patterns
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -14,7 +12,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.OutlinedTextField
@@ -24,13 +21,14 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -70,7 +68,6 @@ fun LoginScreen(navController: NavController) {
     val context = LocalContext.current
     val auth = FirebaseAuth.getInstance()
 
-    // Configure Google Sign-In options
     val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
         .requestIdToken(context.getString(R.string.default_web_client_id))
         .requestEmail()
@@ -78,8 +75,7 @@ fun LoginScreen(navController: NavController) {
 
     val googleSignInClient: GoogleSignInClient = GoogleSignIn.getClient(context, gso)
 
-    // Handle the result of Google Sign-In
-    val scope = rememberCoroutineScope()
+
     val launcher =
         rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
@@ -92,7 +88,6 @@ fun LoginScreen(navController: NavController) {
                 formErrorMessage.value = "Google sign-in failed: ${e.message}"
             }
         }
-
 
     Column(
         modifier = Modifier
@@ -180,11 +175,11 @@ fun LoginScreen(navController: NavController) {
         }
         Spacer(modifier = Modifier.height(10.dp))
         Text(
-            text = "Forget Password", color = Color.White, fontSize = 20.sp,
-            modifier = Modifier
+            text = "Forget Password", color = Color.White, fontSize = 20.sp,  fontWeight = FontWeight.Bold,
+            modifier = Modifier.fillMaxWidth()
                 .align(Alignment.CenterHorizontally)
-                .fillMaxWidth()
                 .clickable { navController.navigate(RouteApp.ForgotPasswordRoute.route) })
+
         Spacer(modifier = Modifier.height(10.dp))
         Button(
             onClick = { navController.navigate(RouteApp.CreateAccountRoute.route) },
@@ -213,14 +208,6 @@ fun LoginScreen(navController: NavController) {
     }
 }
 
-fun isValidEmail(email: String): Boolean {
-    return Patterns.EMAIL_ADDRESS.matcher(email).matches()
-}
-
-fun isValidPassword(password: String): Boolean {
-    val passwordPattern = "^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%^&*])[A-Za-z0-9!@#\$%^&*]{8,}$"
-    return Regex(passwordPattern).matches(password)
-}
 
 fun loginWithEmailPassword(
     email: String,

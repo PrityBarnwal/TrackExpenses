@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
@@ -66,24 +68,51 @@ fun HomeScreen(navController: NavController) {
 
             }
         }
-        Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-            Text(text = "Recent Transaction", color = Color.White, fontSize = 18.sp, textAlign = TextAlign.Start)
-            Text(text = "See All", color = Color.White, fontSize = 14.sp, modifier = Modifier
-                .background(Color.Magenta.copy(0.8f), shape = RoundedCornerShape(12.dp))
-                .padding(8.dp), textAlign = TextAlign.End)
+        Spacer(modifier = Modifier.height(20.dp))
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = "Recent Transaction",
+                color = Color.White,
+                fontSize = 18.sp,
+                textAlign = TextAlign.Start
+            )
+            Text(
+                text = "See All", color = Color.White, fontSize = 14.sp, modifier = Modifier
+                    .background(Color.Magenta.copy(0.8f), shape = RoundedCornerShape(12.dp))
+                    .padding(8.dp), textAlign = TextAlign.End
+            )
+        }
+        Spacer(modifier = Modifier.height(10.dp))
+        LazyColumn {
+            items(20) {
+                CardHomeRecentTransaction()
+            }
         }
 
+    }
+}
 
-            Row(modifier = Modifier.fillMaxWidth().padding(12.dp)) {
-                Column(horizontalAlignment = Alignment.Start) {
-                    Text(text = "Shopping", color = Color.White, fontSize = 12.sp)
-                    Text(text = "Buy Some Grocery", color = Color.White, fontSize = 10.sp)
-                }
-                Column(horizontalAlignment = Alignment.End) {
-                    Text(text = "-$123", color = Color.White, fontSize = 12.sp)
-                    Text(text = "03:00 PM", color = Color.White, fontSize = 10.sp)
-                }
-
+@Composable
+fun CardHomeRecentTransaction() {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(10.dp)
+            .background(Color.Gray, RoundedCornerShape(12.dp))
+            .padding(horizontal = 10.dp, vertical = 5.dp),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Column(horizontalAlignment = Alignment.Start) {
+            Text(text = "Shopping", color = Color.White, fontSize = 12.sp)
+            Text(text = "Buy Some Grocery", color = Color.White, fontSize = 10.sp)
+        }
+        Column(horizontalAlignment = Alignment.End) {
+            Text(text = "-$123", color = Color.White, fontSize = 12.sp)
+            Text(text = "03:00 PM", color = Color.White, fontSize = 10.sp)
         }
     }
 }

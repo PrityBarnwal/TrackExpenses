@@ -37,24 +37,7 @@ fun HomeScreen(navController: NavController) {
             .padding(20.dp)
     ) {
 
-        Box(
-            modifier = Modifier
-                .clip(RoundedCornerShape(20.dp))
-                .fillMaxWidth()
-                .background(Color.Gray)
-        ) {
-            Text(
-                buildAnnotatedString {
-                    withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
-                        append("Balance : ")
-                    }
-                    append("1234")
-                },
-                color = Color.White,
-                fontSize = 18.sp,
-                modifier = Modifier.padding(vertical = 8.dp, horizontal = 12.dp)
-            )
-        }
+        OverAllBalance()
         IncomeExpenditure()
 
         Column(
@@ -83,6 +66,47 @@ fun HomeScreen(navController: NavController) {
 
             }
         }
+        Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+            Text(text = "Recent Transaction", color = Color.White, fontSize = 18.sp, textAlign = TextAlign.Start)
+            Text(text = "See All", color = Color.White, fontSize = 14.sp, modifier = Modifier
+                .background(Color.Magenta.copy(0.8f), shape = RoundedCornerShape(12.dp))
+                .padding(8.dp), textAlign = TextAlign.End)
+        }
+
+
+            Row(modifier = Modifier.fillMaxWidth().padding(12.dp)) {
+                Column(horizontalAlignment = Alignment.Start) {
+                    Text(text = "Shopping", color = Color.White, fontSize = 12.sp)
+                    Text(text = "Buy Some Grocery", color = Color.White, fontSize = 10.sp)
+                }
+                Column(horizontalAlignment = Alignment.End) {
+                    Text(text = "-$123", color = Color.White, fontSize = 12.sp)
+                    Text(text = "03:00 PM", color = Color.White, fontSize = 10.sp)
+                }
+
+        }
+    }
+}
+
+@Composable
+fun OverAllBalance() {
+    Box(
+        modifier = Modifier
+            .clip(RoundedCornerShape(20.dp))
+            .fillMaxWidth()
+            .background(Color.Gray)
+    ) {
+        Text(
+            buildAnnotatedString {
+                withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
+                    append("Balance : ")
+                }
+                append("1234")
+            },
+            color = Color.White,
+            fontSize = 18.sp,
+            modifier = Modifier.padding(vertical = 8.dp, horizontal = 12.dp)
+        )
     }
 }
 
@@ -108,7 +132,7 @@ fun TotalExpenses(heading: String, price: String) {
 }
 
 @Composable
-fun IncomeExpenditure(){
+fun IncomeExpenditure() {
     Column(modifier = Modifier.padding(vertical = 20.dp)) {
         HorizontalDivider(
             thickness = 2.dp,

@@ -90,7 +90,8 @@ fun CreateAccountScreen(navController: NavController) {
         OutlinedTextField(
             value = nameCreate,
             onValueChange = { nameCreate = it },
-            label = { Text("Name") },
+            label = { Text("Name", color = Color.White) },
+            textStyle = TextStyle(color = Color.White, fontSize = 12.sp),
             isError = nameError.value,
             keyboardOptions = KeyboardOptions.Default.copy(
                 keyboardType = KeyboardType.Text,
@@ -126,7 +127,7 @@ fun CreateAccountScreen(navController: NavController) {
                 passwordError.value = !isValidPassword(it)
             },
             isError = passwordError.value,
-            label = { Text("Password") },
+            label = { Text("Password",color = Color.White) },
             textStyle = TextStyle(color = Color.White, fontSize = 12.sp),
             keyboardOptions = KeyboardOptions.Default.copy(
                 keyboardType = KeyboardType.Password,
@@ -147,7 +148,7 @@ fun CreateAccountScreen(navController: NavController) {
                 confirmPasswordError.value = passwordCreate != it
             },
             isError = confirmPasswordError.value,
-            label = { Text("Confirm Password") },
+            label = { Text("Confirm Password",color = Color.White,) },
             textStyle = TextStyle(color = Color.White, fontSize = 12.sp),
             keyboardOptions = KeyboardOptions.Default.copy(
                 keyboardType = KeyboardType.Password,

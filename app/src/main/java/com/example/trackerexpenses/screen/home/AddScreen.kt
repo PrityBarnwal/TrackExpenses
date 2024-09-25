@@ -84,7 +84,7 @@ fun AddScreen(navController: NavController) {
 
         Button(onClick = {
             val price = itemPrice.toDoubleOrNull() ?: 0.0
-            val newItem = GroceryItem(name = itemName, price = price,note=itemNote, time ="")
+            val newItem = GroceryItem(name = itemName, price = price,note=itemNote, date = currentTime)
             viewModel.addItem(newItem)
             itemName = ""
             itemPrice = ""

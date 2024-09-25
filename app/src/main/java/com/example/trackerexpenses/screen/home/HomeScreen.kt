@@ -53,7 +53,7 @@ import com.example.trackerexpenses.GroceryItem
 import com.example.trackerexpenses.GroceryViewModel
 import com.example.trackerexpenses.navigation.RouteApp
 import java.time.LocalDateTime
-
+import java.time.format.DateTimeFormatter
 
 
 @Composable
@@ -72,7 +72,7 @@ fun HomeScreen(navController: NavController) {
         TotalExpense()
         Spacer(modifier = Modifier.height(20.dp))
         ViewAll{
-//           navController.navigate(RouteApp.)
+           navController.navigate(RouteApp.TransactionScreen.route)
         }
 
         Spacer(modifier = Modifier.height(10.dp))
@@ -83,7 +83,7 @@ fun HomeScreen(navController: NavController) {
                     category = item.name,
                     description = item.note,
                     price = "-${item.price}",
-                    time = "$currentTime"
+                    time = item.date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
                 )
             }
         }
@@ -95,7 +95,6 @@ fun CardHomeRecentTransaction(category: String, description: String, price: Stri
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(10.dp)
             .background(Color.Gray, RoundedCornerShape(12.dp))
             .padding(horizontal = 10.dp, vertical = 5.dp),
         horizontalArrangement = Arrangement.SpaceBetween

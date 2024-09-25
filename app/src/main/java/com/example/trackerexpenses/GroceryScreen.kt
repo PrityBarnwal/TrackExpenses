@@ -24,6 +24,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import com.example.trackerexpenses.screen.home.currentTime
 
 
 @Composable
@@ -79,7 +80,7 @@ fun GroceryScreen(viewModel: GroceryViewModel) {
         Button(onClick = {
             val price = itemPrice.toDoubleOrNull() ?: 0.0
             val quantity = itemQuantity.toIntOrNull() ?: 1
-            val newItem = GroceryItem(name = itemName, price = price, quantity = quantity)
+            val newItem = GroceryItem(name = itemName, price = price, quantity = quantity, date = currentTime)
             viewModel.addItem(newItem)
             itemName = ""
             itemPrice = ""

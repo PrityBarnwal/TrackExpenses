@@ -55,7 +55,7 @@ import com.example.trackerexpenses.navigation.RouteApp
 import java.time.LocalDateTime
 
 
-@OptIn(ExperimentalMaterialApi::class)
+
 @Composable
 fun HomeScreen(navController: NavController) {
     val viewModel = viewModel<GroceryViewModel>()
@@ -76,7 +76,7 @@ fun HomeScreen(navController: NavController) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        val currentTime = LocalDateTime.now()
+
         LazyColumn {
             items(groceryItems.take(5)) { item ->
                 CardHomeRecentTransaction(
@@ -239,3 +239,5 @@ fun IncomeExpenditure() {
     }
 
 }
+
+val currentTime = LocalDateTime.now()

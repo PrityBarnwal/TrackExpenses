@@ -16,7 +16,7 @@ import com.example.trackerexpenses.screen.home.AddScreen
 import com.example.trackerexpenses.screen.home.HomeScreen
 import com.example.trackerexpenses.screen.home.ProfileScreen
 import com.example.trackerexpenses.screen.home.ReceiptScreen
-import com.example.trackerexpenses.screen.home.RemainderScreen
+import com.example.trackerexpenses.screen.home.TransactionScreen
 
 
 fun NavGraphBuilder.authNavGraph(
@@ -48,8 +48,8 @@ fun NavGraphBuilder.homeNavGraph(
         composable(route = RouteApp.HomeScreen.route) {
             HomeScreen(navController)
         }
-        composable(route = RouteApp.RemainderScreen.route) {
-            RemainderScreen(navController)
+        composable(route = RouteApp.TransactionScreen.route) {
+            TransactionScreen(navController)
         }
         composable(route = RouteApp.AddScreen.route) {
             AddScreen(navController)

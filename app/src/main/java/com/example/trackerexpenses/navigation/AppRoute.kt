@@ -12,7 +12,7 @@ sealed class RouteApp(val route: String) {
 
 
     object HomeScreen : RouteApp("home_screen_route")
-    object RemainderScreen : RouteApp("remainder_screen_route")
+    object TransactionScreen : RouteApp("remainder_screen_route")
     object AddScreen : RouteApp("add_screen_route")
     object ReceiptScreen : RouteApp("receipt_screen_route")
     object ProfileScreen : RouteApp("profile_screen_route")

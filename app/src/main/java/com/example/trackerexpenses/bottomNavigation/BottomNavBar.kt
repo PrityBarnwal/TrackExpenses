@@ -110,7 +110,7 @@ fun BottomNavbar(
 
     when (navBackStackEntry?.destination?.route) {
         RouteApp.HomeScreen.route,
-        RouteApp.RemainderScreen.route,
+        RouteApp.TransactionScreen.route,
         RouteApp.AddScreen.route,
         RouteApp.ReceiptScreen.route,
         RouteApp.ProfileScreen.route,
@@ -134,7 +134,7 @@ object BottomScreen {
             R.drawable.ic_home
         ),
         BottomNavItem(
-            RouteApp.RemainderScreen.route,
+            RouteApp.TransactionScreen.route,
             R.drawable.ic_notification
         ),
         BottomNavItem(

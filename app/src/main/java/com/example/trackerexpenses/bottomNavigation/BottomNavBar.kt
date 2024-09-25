@@ -13,6 +13,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -39,6 +40,7 @@ fun BottomNavbar(
     navController: NavController,
     onBackPressedDispatcher: OnBackPressedDispatcher,
     isVisible: (Boolean) -> Unit,
+    fabVisibleState: MutableState<Boolean>
 ) {
     val context = LocalContext.current
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -117,11 +119,13 @@ fun BottomNavbar(
         -> {
             bottomNavVisibility = true
             isVisible(true)
+            fabVisibleState.value = true
         }
 
         else -> {
             bottomNavVisibility = false
             isVisible(false)
+            fabVisibleState.value = false
         }
     }
 }
@@ -137,10 +141,10 @@ object BottomScreen {
             RouteApp.TransactionScreen.route,
             R.drawable.ic_notification
         ),
-        BottomNavItem(
-            RouteApp.AddScreen.route,
-            R.drawable.ic_add
-        ),
+//        BottomNavItem(
+//            RouteApp.AddScreen.route,
+//            R.drawable.ic_add
+//        ),
         BottomNavItem(
             RouteApp.ReceiptScreen.route,
             R.drawable.ic_receipt

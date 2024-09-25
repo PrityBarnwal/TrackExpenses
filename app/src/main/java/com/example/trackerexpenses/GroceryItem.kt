@@ -9,5 +9,7 @@ data class GroceryItem(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val name: String,
     val price: Double,
-    val quantity: Int
+    val note: String="",
+    val time: String="",
+    val quantity: Int=0,
 )

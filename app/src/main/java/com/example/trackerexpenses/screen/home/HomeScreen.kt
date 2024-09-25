@@ -28,11 +28,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.trackerexpenses.GroceryViewModel
+import java.time.LocalDateTime
 
 
 @Composable
 fun HomeScreen(navController: NavController) {
+    val viewModel = viewModel<GroceryViewModel>()
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -87,9 +92,10 @@ fun HomeScreen(navController: NavController) {
             )
         }
         Spacer(modifier = Modifier.height(10.dp))
+        val currentTime = LocalDateTime.now()
         LazyColumn {
-            items(20) {
-                CardHomeRecentTransaction()
+            items(viewModel.groceryItems) {item->
+                CardHomeRecentTransaction(category = item.name, description = item.note, price ="-${item.price}", time ="$currentTime" )
             }
         }
 
@@ -97,7 +103,7 @@ fun HomeScreen(navController: NavController) {
 }
 
 @Composable
-fun CardHomeRecentTransaction() {
+fun CardHomeRecentTransaction(category:String,description:String,price: String,time:String) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -107,12 +113,12 @@ fun CardHomeRecentTransaction() {
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Column(horizontalAlignment = Alignment.Start) {
-            Text(text = "Shopping", color = Color.White, fontSize = 12.sp)
-            Text(text = "Buy Some Grocery", color = Color.White, fontSize = 10.sp)
+            Text(text =category, color = Color.White, fontSize = 12.sp)
+            Text(text = description, color = Color.White, fontSize = 10.sp)
         }
         Column(horizontalAlignment = Alignment.End) {
-            Text(text = "-$123", color = Color.White, fontSize = 12.sp)
-            Text(text = "03:00 PM", color = Color.White, fontSize = 10.sp)
+            Text(text = price, color = Color.White, fontSize = 12.sp)
+            Text(text = time, color = Color.White, fontSize = 10.sp)
         }
     }
 }

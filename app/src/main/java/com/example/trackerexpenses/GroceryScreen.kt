@@ -88,16 +88,16 @@ fun GroceryScreen(viewModel: GroceryViewModel) {
             Text("Add Item")
         }
 
-        LazyColumn {
-            items(viewModel.groceryItems) { item ->
-                Row {
-                    Text("${item.name} - $${item.price} x${item.quantity}")
-                    Spacer(modifier = Modifier.weight(1f))
-                    IconButton(onClick = { viewModel.deleteItem(item) }) {
-                        Icon(Icons.Filled.Delete, contentDescription = "Delete Item")
-                    }
-                }
-            }
-        }
+//        LazyColumn {
+//            items(viewModel.groceryItems) { item ->
+//                Row {
+//                    Text("${item.name} - $${item.price} x${item.quantity}")
+//                    Spacer(modifier = Modifier.weight(1f))
+//                    IconButton(onClick = { viewModel.deleteItem(item) }) {
+//                        Icon(Icons.Filled.Delete, contentDescription = "Delete Item")
+//                    }
+//                }
+//            }
+//        }
     }
 }

@@ -89,17 +89,13 @@ fun AddScreen(navController: NavController) {
             itemName = ""
             itemPrice = ""
             itemNote = ""
-            navController.popBackStack()
+            navController.navigate(RouteApp.HomeScreen.route){
+                popUpTo(RouteApp.HomeScreen.route) { inclusive = true }
+            }
+
         }, modifier = Modifier.fillMaxWidth()) {
             Text("Add Item")
         }
-
-//        LazyColumn {
-//            items(viewModel.groceryItems) { item ->
-//                CardHomeRecentTransaction(category = item.name, description = item.note, price ="${item.price}", time ="$currentTime" )
-//
-//            }
-//        }
     }
 }
 

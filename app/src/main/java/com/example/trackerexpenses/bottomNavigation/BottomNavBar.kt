@@ -103,7 +103,7 @@ fun BottomNavbar(
                             )
                         },
                         selectedContentColor = Color.White,
-                        unselectedContentColor = Color.White.copy(0.3f),
+                        unselectedContentColor = Color.Red.copy(0.3f),
                         alwaysShowLabel = true
                     )
                 }

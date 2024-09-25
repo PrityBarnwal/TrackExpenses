@@ -84,9 +84,13 @@ fun HomeScreen(navController: NavController) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
+        val todayData =groceryItems.filter { item -> item.date.toLocalDate() == currentTime.toLocalDate() }
+        if (todayData.isNotEmpty()){
+            Text(text = "Today", color = Color.Red, fontSize = 12.sp)
+        }
 
         LazyColumn {
-            items(groceryItems.take(5)) { item ->
+            items(todayData.take(5)) { item ->
                 CardHomeRecentTransaction(
                     category = item.name,
                     description = item.note,
@@ -97,6 +101,25 @@ fun HomeScreen(navController: NavController) {
                 }
             }
         }
+        val yesterdayData =groceryItems.filter { item ->  item.date.toLocalDate() == currentTime.minusDays(1).toLocalDate()}
+
+        if (yesterdayData.isNotEmpty()){
+            Text(text = "Yesterday", color = Color.Red, fontSize = 12.sp)
+        }
+
+        LazyColumn {
+            items(yesterdayData.take(5)) { item ->
+                CardHomeRecentTransaction(
+                    category = item.name,
+                    description = item.note,
+                    price = "-${item.price}",
+                    time = item.date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+                ){
+                    viewModel.deleteItem(item)
+                }
+            }
+        }
+
     }
 }
 
@@ -107,7 +130,7 @@ fun CardHomeRecentTransaction(
     description: String,
     price: String,
     time: String,
-    onDelete: () -> Unit ={} // Callback to handle deletion
+    onDelete: () -> Unit ={}
 ) {
     var offsetX by remember { mutableStateOf(0f) }
     var isSwiped by remember { mutableStateOf(false) }
@@ -132,9 +155,9 @@ fun CardHomeRecentTransaction(
                 contentDescription = "Delete",
                 tint = Color.White,
                 modifier = Modifier.clickable {onDelete.invoke() }
-                    .size(24.dp)
+                    .size(30.dp)
                     .align(Alignment.CenterEnd)
-                    .padding(end = 2.dp)
+                    .padding(end = 12.dp)
             )
         }
 

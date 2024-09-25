@@ -32,6 +32,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.trackerexpenses.navigation.RouteApp
+import com.example.trackerexpenses.screen.authScreen.authutils.CommonOutlinedTextFieldAuth
+import com.example.trackerexpenses.screen.authScreen.authutils.createUserWithEmailPassword
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 
@@ -83,36 +85,35 @@ fun CreateAccountScreen(navController: NavController) {
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center,
-                    modifier = Modifier
-                    .fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(20.dp))
-        OutlinedTextField(
+        CommonOutlinedTextFieldAuth(
             value = nameCreate,
-            onValueChange = { nameCreate = it },
-            label = { Text("Name", color = Color.White) },
-            textStyle = TextStyle(color = Color.White, fontSize = 12.sp),
+            onValueChange = {
+                nameCreate = it
+            },
             isError = nameError.value,
-            keyboardOptions = KeyboardOptions.Default.copy(
-                keyboardType = KeyboardType.Text,
-                imeAction = ImeAction.Next
-            ), modifier = Modifier.fillMaxWidth()
+            labelText = "Name",
+            keyboardType = KeyboardType.Text,
+            imeAction = ImeAction.Next
         )
+
         Spacer(modifier = Modifier.height(10.dp))
-        OutlinedTextField(
+
+        CommonOutlinedTextFieldAuth(
             value = emailCreate,
             onValueChange = {
                 emailCreate = it
                 emailError.value = !isValidEmail(it)
             },
             isError = emailError.value,
-            label = { Text("Email", color = Color.White) },
-            textStyle = TextStyle(color = Color.White, fontSize = 12.sp),
-            keyboardOptions = KeyboardOptions.Default.copy(
-                keyboardType = KeyboardType.Email,
-                imeAction = ImeAction.Next
-            ), modifier = Modifier.fillMaxWidth()
+            labelText = "Email",
+            keyboardType = KeyboardType.Email,
+            imeAction = ImeAction.Next
         )
+
         if (emailError.value) {
             Text(
                 text = "Invalid email format",
@@ -120,20 +121,19 @@ fun CreateAccountScreen(navController: NavController) {
             )
         }
         Spacer(modifier = Modifier.height(10.dp))
-        OutlinedTextField(
+
+        CommonOutlinedTextFieldAuth(
             value = passwordCreate,
             onValueChange = {
                 passwordCreate = it
                 passwordError.value = !isValidPassword(it)
             },
             isError = passwordError.value,
-            label = { Text("Password",color = Color.White) },
-            textStyle = TextStyle(color = Color.White, fontSize = 12.sp),
-            keyboardOptions = KeyboardOptions.Default.copy(
-                keyboardType = KeyboardType.Password,
-                imeAction = ImeAction.Done
-            ), modifier = Modifier.fillMaxWidth()
+            labelText = "Password",
+            keyboardType = KeyboardType.Password,
+            imeAction = ImeAction.Next
         )
+
         if (passwordError.value) {
             Text(
                 text = "Password must start with a capital letter, contain at least 8 characters, 1 number, and 1 special character",
@@ -141,21 +141,19 @@ fun CreateAccountScreen(navController: NavController) {
             )
         }
         Spacer(modifier = Modifier.height(10.dp))
-        OutlinedTextField(
+
+        CommonOutlinedTextFieldAuth(
             value = confirmPassword,
             onValueChange = {
                 confirmPassword = it
                 confirmPasswordError.value = passwordCreate != it
             },
             isError = confirmPasswordError.value,
-            label = { Text("Confirm Password",color = Color.White,) },
-            textStyle = TextStyle(color = Color.White, fontSize = 12.sp),
-            keyboardOptions = KeyboardOptions.Default.copy(
-                keyboardType = KeyboardType.Password,
-                imeAction = ImeAction.Done
-            ),
-            modifier = Modifier.fillMaxWidth()
+            labelText = "Confirm Password",
+            keyboardType = KeyboardType.Password,
+            imeAction = ImeAction.Done
         )
+
         if (confirmPasswordError.value) {
             Text(text = "Passwords do not match", color = Color.Red)
         }
@@ -194,33 +192,4 @@ fun CreateAccountScreen(navController: NavController) {
             Text(text = "Create Account", color = Color.White)
         }
     }
-}
-
-fun createUserWithEmailPassword(
-    email: String,
-    password: String,
-    name: String,
-    onResult: (Boolean, String?) -> Unit
-) {
-    val auth = FirebaseAuth.getInstance()
-    auth.createUserWithEmailAndPassword(email, password)
-        .addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                val user = auth.currentUser
-                val profileUpdates = UserProfileChangeRequest.Builder()
-                    .setDisplayName(name)
-                    .build()
-
-                user?.updateProfile(profileUpdates)
-                    ?.addOnCompleteListener { profileTask ->
-                        if (profileTask.isSuccessful) {
-                            onResult(true, null) // Success
-                        } else {
-                            onResult(false, profileTask.exception?.message)
-                        }
-                    }
-            } else {
-                onResult(false, task.exception?.message)
-            }
-        }
 }

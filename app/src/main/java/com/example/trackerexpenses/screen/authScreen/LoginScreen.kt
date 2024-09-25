@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.OutlinedTextField
@@ -26,6 +28,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
@@ -38,6 +41,10 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.trackerexpenses.R
 import com.example.trackerexpenses.navigation.RouteApp
+import com.example.trackerexpenses.screen.authScreen.authutils.CommonOutlinedTextFieldAuth
+import com.example.trackerexpenses.screen.authScreen.authutils.firebaseAuthWithGoogle
+import com.example.trackerexpenses.screen.authScreen.authutils.loginWithEmailPassword
+import com.example.trackerexpenses.screen.home.CommonOutlinedTextField
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -101,27 +108,23 @@ fun LoginScreen(navController: NavController) {
             style = MaterialTheme.typography.subtitle1,
             color = Color.White,
             fontSize = 30.sp,
-            fontWeight = FontWeight.Bold,textAlign = TextAlign.Center,
+            fontWeight = FontWeight.Bold, textAlign = TextAlign.Center,
             modifier = Modifier
                 .fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(20.dp))
-        OutlinedTextField(
+        CommonOutlinedTextFieldAuth(
             value = email.value,
             onValueChange = {
                 email.value = it
                 emailError.value = !isValidEmail(it)
             },
             isError = emailError.value,
-            label = { Text("Email", color = Color.White) },
-            singleLine = true,
-            textStyle =
-            TextStyle(color = Color.White, fontSize = 12.sp),
-            keyboardOptions = KeyboardOptions.Default.copy(
-                keyboardType = KeyboardType.Email,
-                imeAction = ImeAction.Next
-            ), modifier = Modifier.fillMaxWidth()
+            labelText = "Email",
+            keyboardType = KeyboardType.Email,
+            imeAction = ImeAction.Next
         )
+
         if (emailError.value) {
             Text(
                 text = "Invalid email format",
@@ -129,21 +132,18 @@ fun LoginScreen(navController: NavController) {
             )
         }
         Spacer(modifier = Modifier.height(10.dp))
-        OutlinedTextField(
+        CommonOutlinedTextFieldAuth(
             value = password.value,
             onValueChange = {
                 password.value = it
                 passwordError.value = !isValidPassword(it)
             },
             isError = passwordError.value,
-            label = { Text("Password", color = Color.White) },
-            singleLine = true,
-            textStyle = TextStyle(color = Color.White, fontSize = 12.sp),
-            keyboardOptions = KeyboardOptions.Default.copy(
-                keyboardType = KeyboardType.Password,
-                imeAction = ImeAction.Done
-            ), modifier = Modifier.fillMaxWidth()
+            labelText = "Password",
+            keyboardType = KeyboardType.Password,
+            imeAction = ImeAction.Done
         )
+
         if (passwordError.value) {
             Text(
                 text = "Password must start with a capital letter, contain at least 8 characters, 1 number, and 1 special character",
@@ -191,7 +191,7 @@ fun LoginScreen(navController: NavController) {
             text = "Forget Password",
             color = Color.White,
             fontSize = 24.sp,
-            fontWeight = FontWeight.Bold,textAlign = TextAlign.Center,
+            fontWeight = FontWeight.Bold, textAlign = TextAlign.Center,
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable { navController.navigate(RouteApp.ForgotPasswordRoute.route) })
@@ -225,38 +225,3 @@ fun LoginScreen(navController: NavController) {
 }
 
 
-fun loginWithEmailPassword(
-    email: String,
-    password: String,
-    onResult: (Boolean, String?) -> Unit
-) {
-    val auth = FirebaseAuth.getInstance()
-    auth.signInWithEmailAndPassword(email, password)
-        .addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                onResult(true, null) // Successful login
-            } else {
-                onResult(false, task.exception?.message) // Login failed, return error message
-            }
-        }
-}
-
-fun firebaseAuthWithGoogle(
-    account: GoogleSignInAccount,
-    navController: NavController,
-    auth: FirebaseAuth
-) {
-    val credential: AuthCredential = GoogleAuthProvider.getCredential(account.idToken, null)
-    auth.signInWithCredential(credential)
-        .addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                // Sign-in success, navigate to HomeScreen
-                navController.navigate(RouteApp.HomeScreen.route) {
-                    popUpTo(RouteApp.LoginRoute.route) { inclusive = true }
-                }
-            } else {
-                // Handle failure
-                Log.w("GoogleSignIn", "signInWithCredential:failure", task.exception)
-            }
-        }
-}

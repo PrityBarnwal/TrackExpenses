@@ -33,8 +33,8 @@ class GroceryViewModel(application: Application) : AndroidViewModel(application)
     fun deleteItem(item: GroceryItem) {
         viewModelScope.launch {
             dao.delete(item)
-//            _groceryItems.value = _groceryItems.value.filter { it != item }
-            _groceryItems.value = _groceryItems.value.filter { it.id != item.id }
+            _groceryItems.value = _groceryItems.value.filter { it != item }
+//            _groceryItems.value = _groceryItems.value.filter { it.id != item.id }
         }
     }
 

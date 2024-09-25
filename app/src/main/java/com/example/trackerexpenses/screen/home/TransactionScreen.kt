@@ -135,7 +135,9 @@ fun TransactionScreen(navController: NavController) {
                     description = item.note,
                     price = "-${item.price}",
                     time = item.date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
-                )
+                ){
+                    viewModel.deleteItem(item)
+                }
             }
         }
     }

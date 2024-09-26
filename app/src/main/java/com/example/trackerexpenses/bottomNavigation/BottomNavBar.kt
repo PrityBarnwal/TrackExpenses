@@ -124,7 +124,8 @@ fun BottomNavbar(
         RouteApp.HomeScreen.route,
         RouteApp.TransactionScreen.route,
         RouteApp.ReceiptScreen.route,
-        RouteApp.AddScreen.route,
+        RouteApp.AddTransactionScreen.route,
+        RouteApp.AddIncomeScreen.route,
         RouteApp.ProfileScreen.route -> {
             fabVisibleState.value = true
         }

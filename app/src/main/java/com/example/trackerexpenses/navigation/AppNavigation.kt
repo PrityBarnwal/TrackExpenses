@@ -12,11 +12,12 @@ import com.example.trackerexpenses.screen.authScreen.ForgotPasswordScreen
 import com.example.trackerexpenses.screen.authScreen.LoginScreen
 import com.example.trackerexpenses.screen.authScreen.ResetEmailScreen
 import com.example.trackerexpenses.screen.authScreen.SplashScreen
-import com.example.trackerexpenses.screen.home.AddScreen
+import com.example.trackerexpenses.screen.home.add.AddTransactionScreen
 import com.example.trackerexpenses.screen.home.HomeScreen
 import com.example.trackerexpenses.screen.home.ProfileScreen
 import com.example.trackerexpenses.screen.home.ReceiptScreen
 import com.example.trackerexpenses.screen.home.TransactionScreen
+import com.example.trackerexpenses.screen.home.add.AddIncomeScreen
 
 
 fun NavGraphBuilder.authNavGraph(
@@ -51,14 +52,19 @@ fun NavGraphBuilder.homeNavGraph(
         composable(route = RouteApp.TransactionScreen.route) {
             TransactionScreen(navController)
         }
-        composable(route = RouteApp.AddScreen.route) {
-            AddScreen(navController)
-        }
+
         composable(route = RouteApp.ReceiptScreen.route) {
             ReceiptScreen(navController)
         }
         composable(route = RouteApp.ProfileScreen.route) {
             ProfileScreen(navController)
+        }
+
+        composable(route = RouteApp.AddTransactionScreen.route) {
+            AddTransactionScreen(navController)
+        }
+        composable(route = RouteApp.AddIncomeScreen.route) {
+            AddIncomeScreen(navController)
         }
     }
 }

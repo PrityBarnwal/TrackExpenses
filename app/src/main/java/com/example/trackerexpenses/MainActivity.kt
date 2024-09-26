@@ -80,6 +80,7 @@ private fun SetupNavigation(
     val bottomNavVisibleState = remember { mutableStateOf(false) }
     var expanded by remember { mutableStateOf(false) }
 
+
     Scaffold(
         backgroundColor = Color.Black,
         modifier = Modifier
@@ -129,7 +130,7 @@ private fun SetupNavigation(
 
     CircularButtons(expanded, onAddTransaction = {
         expanded = !expanded
-        RouteApp.AddScreen.route.let {
+        RouteApp.AddTransactionScreen.route.let {
             navController.navigate(it) {
                 popUpTo(navController.graph.findStartDestination().id) {
                     saveState = true
@@ -138,7 +139,18 @@ private fun SetupNavigation(
                 restoreState = true
             }
         }
-    }, onAddPayment = {})
+    }, onAddIncome = {
+        expanded = !expanded
+        RouteApp.AddIncomeScreen.route.let {
+            navController.navigate(it) {
+                popUpTo(navController.graph.findStartDestination().id) {
+                    saveState = true
+                }
+                launchSingleTop = true
+                restoreState = true
+            }
+        }
+    })
     // Call this effect to update bottom bar visibility whenever the navigation state changes
     LaunchedEffect(navController) {
         navController.addOnDestinationChangedListener { _, destination, _ ->
@@ -146,7 +158,8 @@ private fun SetupNavigation(
             bottomNavVisibleState.value = when (destination.route) {
                 RouteApp.HomeScreen.route,
                 RouteApp.TransactionScreen.route,
-                RouteApp.AddScreen.route,
+                RouteApp.AddTransactionScreen.route,
+                RouteApp.AddIncomeScreen.route,
                 RouteApp.ReceiptScreen.route,
                 RouteApp.ProfileScreen.route -> true
 
@@ -157,7 +170,7 @@ private fun SetupNavigation(
 }
 
 @Composable
-fun CircularButtons(expanded: Boolean, onAddTransaction: () -> Unit, onAddPayment: () -> Unit) {
+fun CircularButtons(expanded: Boolean, onAddTransaction: () -> Unit, onAddIncome: () -> Unit) {
     AnimatedVisibility(visible = expanded) {
         Box(
             contentAlignment = Alignment.BottomCenter,
@@ -184,7 +197,7 @@ fun CircularButtons(expanded: Boolean, onAddTransaction: () -> Unit, onAddPaymen
                             }
 
                             1 -> {
-                                onAddPayment.invoke()
+                                onAddIncome.invoke()
                                 // Handle click for button 1 (Build)
                                 println("Build button clicked")
                             }

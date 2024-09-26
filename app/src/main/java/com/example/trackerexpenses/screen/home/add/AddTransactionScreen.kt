@@ -1,37 +1,23 @@
-package com.example.trackerexpenses.screen.home
+package com.example.trackerexpenses.screen.home.add
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Button
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -40,11 +26,11 @@ import androidx.navigation.NavController
 import com.example.trackerexpenses.GroceryItem
 import com.example.trackerexpenses.GroceryViewModel
 import com.example.trackerexpenses.navigation.RouteApp
-import java.time.LocalDateTime
+import com.example.trackerexpenses.screen.home.currentTime
 
 
 @Composable
-fun AddScreen(navController: NavController) {
+fun AddTransactionScreen(navController: NavController) {
     val viewModel = viewModel<GroceryViewModel>()
 
     var itemName by remember { mutableStateOf("") }
@@ -98,20 +84,3 @@ fun AddScreen(navController: NavController) {
         }
     }
 }
-
-//                Row {
-//                    Text("${item.name} - $${item.price} x${item.quantity}", color = Color.White)
-//                    Spacer(modifier = Modifier.weight(1f))
-//                    IconButton(onClick = { viewModel.deleteItem(item) }) {
-//                        Box(modifier = Modifier
-//                            .background(Color.White)
-//                            .clip(CircleShape)) {
-//                            Icon(
-//                                Icons.Filled.Delete,
-//                                contentDescription = "Delete Item",
-//                                modifier = Modifier
-//                                    .padding(4.dp)
-//                            )
-//                        }
-//                    }
-//                }

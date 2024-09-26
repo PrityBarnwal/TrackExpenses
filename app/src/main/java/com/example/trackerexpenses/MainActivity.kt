@@ -8,22 +8,20 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Scaffold
 import androidx.compose.material.ScaffoldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.rememberNavController
 import com.example.trackerexpenses.bottomNavigation.BottomNavbar
@@ -45,6 +43,7 @@ class MainActivity : ComponentActivity() {
 
             val onBackPressedDispatcher = this.onBackPressedDispatcher
             TrackerExpensesTheme {
+
                 SetupNavigation(onBackPressedDispatcher)
             }
         }
@@ -60,9 +59,10 @@ private fun SetupNavigation(
     val fabVisibleState = remember { mutableStateOf(false) }
     val bottomNavVisibleState = remember { mutableStateOf(false) }
 
-    Scaffold(contentColor = Color.Black,
+    Scaffold(backgroundColor = Color.Black,
         modifier = Modifier
             .fillMaxSize()
+            .statusBarsPadding()
             .navigationBarsPadding(),
         bottomBar = {
             BottomNavbar(
@@ -91,7 +91,6 @@ private fun SetupNavigation(
                             }
                         }
                         RouteApp.AddScreen.route.let { navController.navigate(it) }
-
                     },
                     contentColor = Color.White
                 ) {

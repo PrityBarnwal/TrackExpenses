@@ -126,15 +126,9 @@ fun LoginScreen(navController: NavController) {
             isError = emailError.value,
             labelText = "Email",
             keyboardType = KeyboardType.Email,
-            imeAction = ImeAction.Next
+            imeAction = ImeAction.Next, isErrorText = "Invalid email format"
         )
 
-        if (emailError.value) {
-            Text(
-                text = "Invalid email format",
-                color = Color.Red
-            )
-        }
         Spacer(modifier = Modifier.height(10.dp))
         CommonOutlinedTextFieldAuth(
             value = password.value,
@@ -145,15 +139,10 @@ fun LoginScreen(navController: NavController) {
             isError = passwordError.value,
             labelText = "Password",
             keyboardType = KeyboardType.Password,
-            imeAction = ImeAction.Done
+            imeAction = ImeAction.Done,
+            isErrorText = "Password must start with a capital letter, contain at least 8 characters, 1 number, and 1 special character"
         )
 
-        if (passwordError.value) {
-            Text(
-                text = "Password must start with a capital letter, contain at least 8 characters, 1 number, and 1 special character",
-                color = Color.Red
-            )
-        }
         Spacer(modifier = Modifier.height(10.dp))
 
         formErrorMessage.value?.let {

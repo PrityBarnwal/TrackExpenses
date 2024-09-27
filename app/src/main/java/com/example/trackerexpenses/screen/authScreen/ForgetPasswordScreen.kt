@@ -21,11 +21,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.trackerexpenses.navigation.RouteApp
+import com.example.trackerexpenses.screen.authScreen.authutils.CommonOutlinedTextFieldAuth
 import com.google.firebase.auth.FirebaseAuth
 
 @Composable
@@ -56,22 +58,18 @@ fun ForgotPasswordScreen(navController: NavController) {
         Spacer(modifier = Modifier.height(20.dp))
 
         // Email Input
-        OutlinedTextField(
+        CommonOutlinedTextFieldAuth(
             value = email.value,
             onValueChange = {
                 email.value = it
-                emailError.value = !isValidEmail(it)
+                emailError.value =!isValidEmail(it)
             },
             isError = emailError.value,
-            label = { Text("Email") },
-            keyboardOptions = KeyboardOptions.Default.copy(
-                imeAction = ImeAction.Done
-            ),
-            modifier = Modifier.fillMaxWidth()
+            labelText = "Email",
+            keyboardType = KeyboardType.Email,
+            imeAction = ImeAction.Done, isErrorText = "Invalid email format"
         )
-        if (emailError.value) {
-            Text(text = "Invalid email format", color = Color.Red)
-        }
+
         Spacer(modifier = Modifier.height(10.dp))
 
         // Send Reset Email Button

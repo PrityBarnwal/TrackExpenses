@@ -97,7 +97,7 @@ fun CreateAccountScreen(navController: NavController) {
             isError = nameError.value,
             labelText = "Name",
             keyboardType = KeyboardType.Text,
-            imeAction = ImeAction.Next
+            imeAction = ImeAction.Next, isErrorText = "Please Enter Name"
         )
 
         Spacer(modifier = Modifier.height(10.dp))
@@ -111,15 +111,9 @@ fun CreateAccountScreen(navController: NavController) {
             isError = emailError.value,
             labelText = "Email",
             keyboardType = KeyboardType.Email,
-            imeAction = ImeAction.Next
+            imeAction = ImeAction.Next, isErrorText = "Invalid email format"
         )
 
-        if (emailError.value) {
-            Text(
-                text = "Invalid email format",
-                color = Color.Red
-            )
-        }
         Spacer(modifier = Modifier.height(10.dp))
 
         CommonOutlinedTextFieldAuth(
@@ -131,15 +125,10 @@ fun CreateAccountScreen(navController: NavController) {
             isError = passwordError.value,
             labelText = "Password",
             keyboardType = KeyboardType.Password,
-            imeAction = ImeAction.Next
+            imeAction = ImeAction.Next,
+            isErrorText = "Password must start with a capital letter, contain at least 8 characters, 1 number, and 1 special character"
         )
 
-        if (passwordError.value) {
-            Text(
-                text = "Password must start with a capital letter, contain at least 8 characters, 1 number, and 1 special character",
-                color = Color.Red
-            )
-        }
         Spacer(modifier = Modifier.height(10.dp))
 
         CommonOutlinedTextFieldAuth(
@@ -151,12 +140,9 @@ fun CreateAccountScreen(navController: NavController) {
             isError = confirmPasswordError.value,
             labelText = "Confirm Password",
             keyboardType = KeyboardType.Password,
-            imeAction = ImeAction.Done
+            imeAction = ImeAction.Done, isErrorText = "Passwords do not match"
         )
 
-        if (confirmPasswordError.value) {
-            Text(text = "Passwords do not match", color = Color.Red)
-        }
         Spacer(modifier = Modifier.height(10.dp))
         formErrorMessage.value?.let {
             Text(text = it, color = Color.Red)

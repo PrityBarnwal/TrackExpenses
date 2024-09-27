@@ -1,4 +1,4 @@
-package com.example.trackerexpenses
+package com.example.trackerexpenses.utils
 
 import androidx.room.TypeConverter
 import java.time.LocalDateTime

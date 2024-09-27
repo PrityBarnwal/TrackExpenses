@@ -1,4 +1,4 @@
-package com.example.trackerexpenses
+package com.example.trackerexpenses.groceryDb
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

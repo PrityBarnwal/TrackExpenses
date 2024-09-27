@@ -23,8 +23,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.example.trackerexpenses.GroceryItem
-import com.example.trackerexpenses.GroceryViewModel
+import com.example.trackerexpenses.groceryDb.GroceryItem
+import com.example.trackerexpenses.screen.home.addGrocery.GroceryViewModel
 import com.example.trackerexpenses.navigation.RouteApp
 import com.example.trackerexpenses.screen.home.currentTime
 

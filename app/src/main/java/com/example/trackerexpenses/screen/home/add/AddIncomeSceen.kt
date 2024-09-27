@@ -31,11 +31,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.example.trackerexpenses.GroceryViewModel
 import com.example.trackerexpenses.incomeDb.IncomeItem
 import com.example.trackerexpenses.navigation.RouteApp
-import com.example.trackerexpenses.screen.home.CardHomeRecentTransaction
-import java.time.format.DateTimeFormatter
 
 @Composable
 fun AddIncomeScreen(navController: NavController) {

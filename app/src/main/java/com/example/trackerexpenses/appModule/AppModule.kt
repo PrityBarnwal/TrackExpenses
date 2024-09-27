@@ -1,4 +1,4 @@
-package com.example.trackerexpenses
+package com.example.trackerexpenses.appModule
 
 import android.content.Context
 import androidx.room.Database
@@ -7,7 +7,11 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.example.trackerexpenses.groceryDb.GroceryDao
+import com.example.trackerexpenses.groceryDb.GroceryItem
+import com.example.trackerexpenses.incomeDb.IncomeDao
 import com.example.trackerexpenses.incomeDb.IncomeItem
+import com.example.trackerexpenses.utils.Converters
 
 @Database(entities = [GroceryItem::class, IncomeItem::class], version = 2)
 @TypeConverters(Converters::class)

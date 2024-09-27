@@ -1,10 +1,9 @@
-package com.example.trackerexpenses
+package com.example.trackerexpenses.groceryDb
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
-import com.example.trackerexpenses.incomeDb.IncomeItem
 
 
 @Dao
@@ -17,13 +16,4 @@ interface GroceryDao {
 
     @Delete
     suspend fun delete(item: GroceryItem)
-}
-
-@Dao
-interface IncomeDao {
-    @Insert
-    suspend fun insert(income: IncomeItem)
-
-    @Query("SELECT * FROM income_table")
-    suspend fun getAllIncome():  List<IncomeItem>
 }

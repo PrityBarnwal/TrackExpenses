@@ -5,9 +5,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.trackerexpenses.GroceryDatabase
-import com.example.trackerexpenses.GroceryItem
-import com.example.trackerexpenses.Product
+import com.example.trackerexpenses.appModule.GroceryDatabase
 import com.example.trackerexpenses.incomeDb.IncomeItem
 import kotlinx.coroutines.launch
 

@@ -46,7 +46,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.trackerexpenses.GroceryItem
 import com.example.trackerexpenses.GroceryViewModel
+import com.example.trackerexpenses.incomeDb.IncomeItem
 import com.example.trackerexpenses.navigation.RouteApp
+import com.example.trackerexpenses.screen.home.add.IncomeViewModel
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -269,6 +271,10 @@ fun ViewAll(seeAll: () -> Unit) {
 
 @Composable
 fun OverAllBalance() {
+    val incomeViewModel: IncomeViewModel = viewModel()
+    val incomeAdd by incomeViewModel.income
+    val totalIncome = incomeAdd.sumOf { it.incomeAmount.toDoubleOrNull() ?: 0.0 }
+
     Box(
         modifier = Modifier
             .clip(RoundedCornerShape(20.dp))
@@ -280,7 +286,8 @@ fun OverAllBalance() {
                 withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
                     append("Balance : ")
                 }
-                append("1234")
+                append("$totalIncome")
+
             },
             color = Color.White,
             fontSize = 18.sp,

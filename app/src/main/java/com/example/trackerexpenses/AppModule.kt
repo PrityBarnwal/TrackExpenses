@@ -5,11 +5,15 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
+import com.example.trackerexpenses.incomeDb.IncomeItem
 
-@Database(entities = [GroceryItem::class], version = 1)
+@Database(entities = [GroceryItem::class, IncomeItem::class], version = 2)
 @TypeConverters(Converters::class)
 abstract class GroceryDatabase : RoomDatabase() {
     abstract fun groceryDao(): GroceryDao
+    abstract fun incomeDao(): IncomeDao
 
     companion object {
         @Volatile
@@ -21,10 +25,21 @@ abstract class GroceryDatabase : RoomDatabase() {
                     context.applicationContext,
                     GroceryDatabase::class.java,
                     "grocery_database"
-                ).build()
+                )
+                    .addMigrations(MIGRATION_1_2)
+                    .build()
                 INSTANCE = instance
                 instance
             }
         }
     }
 }
+
+val MIGRATION_1_2 = object : Migration(1, 2) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+        database.execSQL(
+            "CREATE TABLE IF NOT EXISTS `income_table` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `incomeAmount` TEXT NOT NULL)"
+        )
+    }
+}
+

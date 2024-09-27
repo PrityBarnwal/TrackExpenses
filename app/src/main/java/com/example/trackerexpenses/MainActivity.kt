@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.shape.CircleShape
@@ -176,49 +177,52 @@ fun CircularButtons(expanded: Boolean, onAddTransaction: () -> Unit, onAddIncome
             contentAlignment = Alignment.BottomCenter,
             modifier = Modifier
                 .fillMaxSize()
-                .padding(bottom = 150.dp)
+                .padding(bottom = 100.dp)
         ) {
             val numberOfButtons = 3
-            val radius = 100.dp // Set your desired radius here
-            val angleIncrement = 360f / numberOfButtons
+            val angles = listOf(0f, 90f, 180f) // Angles for buttons 0, 1, and 2
+            val radii = listOf(150.dp, 110.dp, 180.dp) // Radii for buttons 0-1, 1-2, and 0-2
 
             for (i in 0 until numberOfButtons) {
-                val angle = Math.toRadians(angleIncrement * i.toDouble()).toFloat()
-                val x = radius * cos(angle)
-                val y = radius * sin(angle)
+                // Calculate angle in radians based on the specified angles
+                val angleInRadians = Math.toRadians(angles[i].toDouble() - 180) // Start from -90 degrees for proper alignment
+
+                // Use different radii for each button
+                val radius = radii[i]
+
+                // Calculate x and y based on radius and angle
+                val x = radius.value * cos(angleInRadians).toFloat()
+                val y = radius.value * sin(angleInRadians).toFloat()
 
                 FloatingActionButton(
                     onClick = {
                         when (i) {
                             0 -> {
                                 onAddTransaction.invoke()
-                                // Handle click for button 0 (Share)
-                                println("Share button clicked")
+                                println("Transaction button clicked")
                             }
 
                             1 -> {
                                 onAddIncome.invoke()
-                                // Handle click for button 1 (Build)
-                                println("Build button clicked")
+                                println("Income button clicked")
                             }
 
                             2 -> {
-                                // Handle click for button 2 (Warning)
                                 println("Warning button clicked")
                             }
                         }
                     },
                     modifier = Modifier
                         .graphicsLayer {
-                            translationX = x.value
-                            translationY = y.value
+                            translationX = x
+                            translationY = y
                         }
                         .padding(8.dp)
                 ) {
                     Icon(
                         imageVector = when (i) {
-                            0 -> Icons.Default.Share
-                            1 -> Icons.Default.Build
+                            0 -> Icons.Default.Share // Replace with appropriate icons
+                            1 -> Icons.Default.Build // Example for income
                             else -> Icons.Default.Warning
                         },
                         contentDescription = "Button ${i + 1}"
@@ -228,3 +232,4 @@ fun CircularButtons(expanded: Boolean, onAddTransaction: () -> Unit, onAddIncome
         }
     }
 }
+

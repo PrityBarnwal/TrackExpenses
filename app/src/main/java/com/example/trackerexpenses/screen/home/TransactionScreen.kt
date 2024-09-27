@@ -1,5 +1,6 @@
 package com.example.trackerexpenses.screen.home
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,6 +20,8 @@ import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -48,7 +51,7 @@ fun TransactionScreen(navController: NavController) {
     val groceryItems by viewModel.groceryItems
 
     var expanded by remember { mutableStateOf(false) }
-    var selectedOption by remember { mutableStateOf("Today") }
+    var selectedOption by remember { mutableStateOf("Monthly") }
     var search by remember { mutableStateOf("") }
     val options = listOf("Today", "Yesterday", "Weekly", "Monthly", "Yearly")
 
@@ -70,8 +73,12 @@ fun TransactionScreen(navController: NavController) {
         CommonOutlinedTextField(
             value = search,
             onValueChange = { search = it },
-            modifier = Modifier.fillMaxWidth(),
-            trailingIcon = Icons.Default.Search, labelText = "Search"
+            modifier = Modifier
+                .fillMaxWidth(),
+            trailingIcon = if (search.isEmpty()) Icons.Default.Search else Icons.Default.Clear,
+            labelText = "Search", trailingIconClickable = {
+                search=""
+            }
         )
 
         Spacer(modifier = Modifier.height(10.dp))
@@ -148,6 +155,7 @@ fun CommonOutlinedTextField(
     labelText: String = "",
     labelVisible: Boolean = true,
     readOnly: Boolean = false,
+    trailingIconClickable:()->Unit ={}
 ) {
     OutlinedTextField(
         readOnly = readOnly,
@@ -159,7 +167,9 @@ fun CommonOutlinedTextField(
             Icon(
                 trailingIcon,
                 contentDescription = null,
-                tint = Color.White
+                tint = Color.White, modifier = Modifier.clickable {
+                    trailingIconClickable.invoke()
+                }
             )
         },
         singleLine = true,

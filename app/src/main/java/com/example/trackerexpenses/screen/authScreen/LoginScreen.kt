@@ -1,6 +1,8 @@
 package com.example.trackerexpenses.screen.authScreen
 
+import android.app.Activity
 import android.util.Log
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
@@ -66,7 +68,9 @@ fun LoginScreen(navController: NavController) {
     val emailError = remember { mutableStateOf(false) }
     val passwordError = remember { mutableStateOf(false) }
     val formErrorMessage = remember { mutableStateOf<String?>(null) }
-
+    BackHandler {
+        (navController.context as? Activity)?.finish()
+    }
 
     val isFormValid by remember {
         derivedStateOf {

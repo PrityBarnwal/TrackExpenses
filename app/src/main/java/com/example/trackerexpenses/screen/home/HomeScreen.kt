@@ -1,5 +1,7 @@
 package com.example.trackerexpenses.screen.home
 
+import android.app.Activity
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
@@ -53,6 +55,11 @@ import java.time.format.DateTimeFormatter
 fun HomeScreen(navController: NavController) {
     val viewModel = viewModel<GroceryViewModel>()
     val groceryItems by viewModel.groceryItems
+
+    BackHandler {
+        (navController.context as? Activity)?.finish()
+    }
+
     Column(
         modifier = Modifier
             .fillMaxWidth()

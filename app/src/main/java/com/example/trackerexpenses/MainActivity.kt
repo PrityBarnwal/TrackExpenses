@@ -26,6 +26,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Build
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Icon
@@ -118,7 +119,10 @@ private fun SetupNavigation(
                     },
                     contentColor = Color.White
                 ) {
-                    Icon(imageVector = Icons.Filled.Add, contentDescription = "Add icon")
+                    Icon(
+                        imageVector = if (expanded) Icons.Filled.Close else Icons.Filled.Add,
+                        contentDescription = "Add icon"
+                    )
                 }
             }
         },
@@ -185,7 +189,8 @@ fun CircularButtons(expanded: Boolean, onAddTransaction: () -> Unit, onAddIncome
 
             for (i in 0 until numberOfButtons) {
                 // Calculate angle in radians based on the specified angles
-                val angleInRadians = Math.toRadians(angles[i].toDouble() - 180) // Start from -90 degrees for proper alignment
+                val angleInRadians =
+                    Math.toRadians(angles[i].toDouble() - 180) // Start from -90 degrees for proper alignment
 
                 // Use different radii for each button
                 val radius = radii[i]
@@ -221,11 +226,11 @@ fun CircularButtons(expanded: Boolean, onAddTransaction: () -> Unit, onAddIncome
                 ) {
                     Icon(
                         imageVector = when (i) {
-                            0 -> Icons.Default.Share // Replace with appropriate icons
-                            1 -> Icons.Default.Build // Example for income
+                            0 -> Icons.Default.Share
+                            1 -> Icons.Default.Build
                             else -> Icons.Default.Warning
                         },
-                        contentDescription = "Button ${i + 1}"
+                        contentDescription = "Button ${i + 1}", tint = Color.White
                     )
                 }
             }
